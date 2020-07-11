@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOULD I WEAR A MASK?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@800&display=swap" rel="stylesheet"> 
+
+    <style>
+
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        div.flexContainer {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            width: 75%;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 60px;
+            color: white;
+            margin: 125px 0 10px 0;
+        }
+
+        button,
+        p {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        div.gif {
+            width: 100%;
+        }
+
+        button {
+            font-size: 15px;
+            margin-bottom: 50px;
+            cursor: pointer;
+            box-shadow: 2px 2px 2px grey;
+        }
+
+        button:hover {
+            background-color: lightgoldenrodyellow;
+        }
+
+        button:active {
+        transform: translateY(4px);
+        }
+
+        img {
+            max-width: 500px;
+            height: auto;
+        }
+
+        p {
+            font-size: 30px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <main>
+
+        <div class = "flexContainer">
+            <h1>Should I wear a mask?</h1>
+            <span><button>ask me!</button></span>
+                <div class = "gif">
+                    <!-- <img src = "./assets/monaLisa.jpg" alt = "Mona Lisa prepared for COVID"> -->
+                
+                </div>
+        </div>
+
+    </main>
+
+
+    <script src='https://code.jquery.com/jquery-3.4.0.min.js' integrity='sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=' crossorigin='anonymous'></script>
+    <script>
+
+        const app = {};
+        app.API_KEY = `H5eJucZg7WWh9oaeVlJ9hGe2KscQgkxK`;
+
+
+        app.displayImages = (gifs) => {
+            $('div.gif').empty();
+            let gifIndex = Math.floor(Math.random() * gifs.length);
+                    
+            $('div.gif').append(`<img src = "${gifs[gifIndex].images.fixed_height.url}">
+            `);
+
+            $('button').html(`ask me again!`)
+        };
+
+        app.getImages = () => {
+            $.ajax({
+                
+                url: 'http://api.giphy.com/v1/gifs/search',
+                method: 'GET', 
+                dataType: 'json',
+                data: {
+                    api_key: app.API_KEY,
+                    q: "obviously"
+                }
+            }).then((result) => {
+        // .then uses a callback function ^, callback expects whatever it is we're getting back
+
+                        $('.results').empty();
+                        console.log(result.data);
+                        app.displayImages(result.data);
+                        // console.log(result);
+                        
+                    });
+                };
+
+
+
+    app.init = () => {
+            $('button').on('click', () => {
+                app.getImages();
+        });
+    };
+
+        $(() => app.init());
+    </script>
+
+</body>
+</html>
